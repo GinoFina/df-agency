@@ -1,4 +1,4 @@
-import emailjs from 'emailjs-com'
+import emailjs from '@emailjs/browser'
 import { useMemo, useRef, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 
@@ -91,7 +91,7 @@ function ContactForm() {
     event.preventDefault()
 
     if (!captchaToken) {
-      setStatus('Validá el captcha antes de enviar el formulario.')
+      setStatus('Valida el captcha antes de enviar el formulario.')
       return
     }
 
@@ -112,7 +112,8 @@ function ContactForm() {
       resetDetailFields()
       setCaptchaToken('')
       captchaRef.current?.reset()
-    } catch {
+    } catch (error) {
+      console.error('Error al enviar formulario con EmailJS:', error)
       setStatus('No se pudo enviar el mensaje. Intentá nuevamente.')
     }
   }
@@ -120,7 +121,7 @@ function ContactForm() {
   return (
     <section id="contacto" className="bg-slate-50 px-4 py-12 md:px-8 md:py-20">
       <div className="mx-auto max-w-3xl rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 md:p-8">
-        <h2 className="text-3xl font-semibold text-brand-950">Contactanos</h2>
+        <h2 className="text-3xl font-semibold text-brand-950">Contáctanos</h2>
         <p className="mt-3 text-sm text-slate-600">Completá el formulario y recibí una propuesta según tu objetivo.</p>
 
         <form ref={formRef} className="mt-8 space-y-4" onSubmit={handleSubmit}>
