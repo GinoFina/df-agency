@@ -1,33 +1,70 @@
-import stadiumImage from '../assets/images/estadio.png'
+import { useState, useEffect } from 'react';
+import { ChevronDown } from 'lucide-react';
+import estadioImg from '../assets/images/fondo-estadio.jpg';
 
-function Hero() {
+const content = {
+  ES: {
+    tagline: 'Precision in Talent,\nPower in Results',
+    subtitle: 'Representamos jugadores, conectamos clubes y construimos carreras en el fútbol profesional.',
+    scroll: 'Deslizá para explorar',
+  },
+  EN: {
+    tagline: 'Precision in Talent,\nPower in Results',
+    subtitle: 'We represent players, connect clubs and build careers in professional football.',
+    scroll: 'Scroll to explore',
+  },
+};
+
+export default function Hero({ lang }) {
+  const t = content[lang];
+  const [scrollOpacity, setScrollOpacity] = useState(1);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Fade out completely after 150px of scroll
+      const opacity = Math.max(0, 1 - window.scrollY / 150);
+      setScrollOpacity(opacity);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <section
-      id="inicio"
-      className="relative flex min-h-[80vh] items-center px-4 pb-16 pt-28 text-white md:px-8 md:pt-36"
-      style={{
-        backgroundImage: `linear-gradient(rgba(3, 14, 35, 0.7), rgba(3, 14, 35, 0.85)), url(${stadiumImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      id="home"
+      className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden"
     >
-      <div className="mx-auto w-full max-w-7xl">
-        <div className="max-w-3xl">
-          <p className="mb-3 text-sm uppercase tracking-[0.2em] text-slate-200">DF Agency</p>
-          <h1 className="text-4xl font-bold leading-tight md:text-6xl">Team Strength, Individual Success</h1>
-          <p className="mt-6 max-w-2xl text-base text-slate-200 md:text-lg">
-            Potenciamos carreras deportivas y proyectos de clubes con una gestión estratégica, legal y comercial integral.
-          </p>
-          <a
-            href="#contacto"
-            className="mt-8 inline-flex rounded-md bg-white px-6 py-3 font-semibold text-brand-950 transition hover:bg-slate-200"
-          >
-            Agendar asesoría
-          </a>
-        </div>
+      {/* Background image */}
+      <img
+        src={estadioImg}
+        alt="Football stadium"
+        className="absolute inset-0 w-full h-full object-cover object-center"
+      />
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-brand-950/75 via-brand-950/55 to-brand-950" />
+
+      {/* Radial glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(30,58,122,0.35)_0%,transparent_70%)]" />
+
+      {/* Content — reduced title to half the former size */}
+      <div className="relative z-10 px-4 md:px-8 max-w-4xl mx-auto flex flex-col items-center">
+        <h1 className="font-heading font-black text-4xl sm:text-5xl md:text-6xl leading-tight mb-6 text-white animate-fade-up whitespace-pre-line">
+          {t.tagline}
+        </h1>
+        <p className="text-slate-300 text-base md:text-lg max-w-lg mx-auto leading-relaxed animate-fade-up" style={{ animationDelay: '0.15s' }}>
+          {t.subtitle}
+        </p>
+      </div>
+
+      {/* Scroll indicator — fades out as user scrolls down */}
+      <div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-slate-400 z-10 pointer-events-none"
+        style={{ opacity: scrollOpacity, transition: 'opacity 0.1s linear' }}
+      >
+        <span className="text-xs uppercase tracking-widest">{t.scroll}</span>
+        <ChevronDown size={20} className="animate-bounce" />
       </div>
     </section>
-  )
+  );
 }
-
-export default Hero

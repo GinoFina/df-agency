@@ -1,27 +1,30 @@
-import ContactForm from './components/ContactForm'
-import Footer from './components/Footer'
-import Navbar from './components/Navbar'
-import About from './sections/About'
-import Hero from './sections/Hero'
-import Services from './sections/Services'
-import SocialFeed from './sections/SocialFeed'
-import StatsAndFaq from './sections/StatsAndFaq'
+import { useState } from 'react';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Hero from './sections/Hero';
+import About from './sections/About';
+import Services from './sections/Services';
+import StatsAndFaq from './sections/StatsAndFaq';
+import SocialFeed from './sections/SocialFeed';
+import ContactForm from './components/ContactForm';
 
-function App() {
+export default function App() {
+  const [lang, setLang] = useState('ES');
+
   return (
-    <div className="bg-white text-slate-900">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Services />
-        <StatsAndFaq />
-        <SocialFeed />
-        <ContactForm />
-      </main>
-      <Footer />
-    </div>
-  )
-}
+    <div className="min-h-screen bg-brand-950 text-white">
+      <Navbar lang={lang} setLang={setLang} />
 
-export default App
+      <main>
+        <Hero lang={lang} />
+        <About lang={lang} />
+        <Services lang={lang} />
+        <StatsAndFaq lang={lang} />
+        <SocialFeed lang={lang} />
+        <ContactForm lang={lang} />
+      </main>
+
+      <Footer lang={lang} />
+    </div>
+  );
+}

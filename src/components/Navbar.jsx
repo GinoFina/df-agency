@@ -1,107 +1,149 @@
-import { Menu, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react';
+import { Menu, X, ChevronDown, Globe } from 'lucide-react';
+import logo from '../assets/images/DF-Agency-logo.jpg';
 
 const navLinks = [
-  { label: 'Inicio', href: '#inicio' },
-  { label: 'Nosotros', href: '#nosotros' },
-  { label: 'Servicios', href: '#servicios' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Contacto', href: '#contacto' },
-]
+  { href: '#about',   label: { ES: 'Nosotros',  EN: 'About' } },
+  { href: '#services',label: { ES: 'Servicios', EN: 'Services' } },
+  { href: '#social',  label: { ES: 'Social',    EN: 'Social' } },
+  { href: '#contact', label: { ES: 'Contacto',  EN: 'Contact' } },
+];
 
-function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [language, setLanguage] = useState('ES')
-  const [menuOpen, setMenuOpen] = useState(false)
+export default function Navbar({ lang, setLang }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 24)
-    onScroll()
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-  const navClassName = isScrolled
-    ? 'bg-brand-900/95 shadow-lg backdrop-blur'
-    : 'bg-transparent'
+  const handleLinkClick = () => setMenuOpen(false);
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${navClassName}`}>
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 text-white md:px-8">
-        <a href="#inicio" className="text-xl font-semibold tracking-wide">
-          DF Agency
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-brand-950/95 shadow-2xl shadow-brand-950/60 backdrop-blur-md' : 'bg-transparent'
+        }`}
+    >
+      <nav className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-16 md:h-20">
+        {/* Logo */}
+        <a href="#" className="flex items-center gap-3 group" aria-label="DF Agency Home">
+          <img
+            src={logo}
+            alt="DF Agency Logo"
+            className="h-10 w-10 rounded-full object-cover ring-2 ring-accent/40 group-hover:ring-accent transition-all duration-300"
+          />
+          <span className="font-heading font-800 text-xl text-white tracking-wide hidden sm:block">
+            DF Agency
+          </span>
         </a>
 
-        <button
-          type="button"
-          className="rounded-md border border-white/30 p-2 md:hidden"
-          onClick={() => setMenuOpen((prev) => !prev)}
-          aria-label="Abrir menú"
-        >
-          {menuOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
-
-        <div className="hidden items-center gap-7 md:flex">
+        {/* Desktop nav */}
+        <ul className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm text-slate-100 transition hover:text-white">
-              {link.label}
-            </a>
+            <li key={link.href}>
+              <a
+                href={link.href}
+                className="text-sm font-medium text-slate-300 hover:text-accent transition-colors duration-200 relative group"
+              >
+                {link.label[lang]}
+                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300 rounded-full" />
+              </a>
+            </li>
           ))}
-          <select
-            aria-label="Seleccionar idioma"
-            value={language}
-            onChange={(event) => setLanguage(event.target.value)}
-            className="rounded-md border border-slate-300/40 bg-white/10 px-3 py-2 text-sm"
-          >
-            <option value="ES" className="text-brand-950">
-              ES
-            </option>
-            <option value="EN" className="text-brand-950">
-              EN
-            </option>
-          </select>
+        </ul>
+
+        {/* Right side: Lang + CTA */}
+        <div className="hidden md:flex items-center gap-4">
+          {/* Language selector */}
+          <div className="relative">
+            <button
+              id="lang-toggle"
+              onClick={() => setLangOpen((v) => !v)}
+              className="flex items-center gap-1.5 text-sm text-slate-300 hover:text-white transition-colors px-3 py-1.5 rounded-lg glass-light"
+            >
+              <Globe size={14} />
+              {lang}
+              <ChevronDown size={12} className={`transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {langOpen && (
+              <div className="absolute right-0 top-10 glass rounded-xl overflow-hidden min-w-[80px] shadow-xl">
+                {['ES', 'EN'].map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => { setLang(l); setLangOpen(false); }}
+                    className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${lang === l ? 'text-accent bg-accent/10' : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                      }`}
+                  >
+                    {l}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* CTA */}
           <a
-            href="#contacto"
-            className="rounded-md bg-white px-4 py-2 text-sm font-semibold text-brand-950 transition hover:bg-slate-200"
+            href="#contact"
+            className="text-sm font-semibold bg-accent hover:bg-accent-light text-brand-950 px-5 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-accent/30 hover:scale-105"
           >
-            Contactar
+            {lang === 'ES' ? 'Hablemos' : 'Let\'s Talk'}
           </a>
         </div>
+
+        {/* Hamburger */}
+        <button
+          id="mobile-menu-toggle"
+          onClick={() => setMenuOpen((v) => !v)}
+          className="md:hidden text-white p-2 rounded-lg glass-light transition-colors"
+          aria-label="Toggle Menu"
+        >
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
       </nav>
 
-      {menuOpen && (
-        <div className="bg-brand-900/95 px-4 pb-4 md:hidden">
-          <div className="flex flex-col gap-3 text-sm text-slate-100">
-            {navLinks.map((link) => (
-              <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>
-                {link.label}
+      {/* Mobile Menu */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${menuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+          } bg-brand-950/98 backdrop-blur-md`}
+      >
+        <ul className="flex flex-col px-6 py-4 gap-2 border-t border-white/5">
+          {navLinks.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                onClick={handleLinkClick}
+                className="block py-3 text-base font-medium text-slate-300 hover:text-accent transition-colors border-b border-white/5"
+              >
+                {link.label[lang]}
               </a>
-            ))}
-            <select
-              aria-label="Seleccionar idioma móvil"
-              value={language}
-              onChange={(event) => setLanguage(event.target.value)}
-              className="rounded-md border border-slate-300/40 bg-white/10 px-3 py-2"
-            >
-              <option value="ES" className="text-brand-950">
-                ES
-              </option>
-              <option value="EN" className="text-brand-950">
-                EN
-              </option>
-            </select>
+            </li>
+          ))}
+          <li className="flex items-center gap-3 pt-3">
             <a
-              href="#contacto"
-              onClick={() => setMenuOpen(false)}
-              className="rounded-md bg-white px-4 py-2 text-center font-semibold text-brand-950"
+              href="#contact"
+              onClick={handleLinkClick}
+              className="flex-1 text-center text-sm font-semibold bg-accent hover:bg-accent-light text-brand-950 px-5 py-2.5 rounded-full transition-all"
             >
-              Contactar
+              {lang === 'ES' ? 'Hablemos' : 'Let\'s Talk'}
             </a>
-          </div>
-        </div>
-      )}
+            <div className="flex gap-2">
+              {['ES', 'EN'].map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={`px-3 py-2 text-sm rounded-lg transition-colors ${lang === l ? 'bg-accent text-brand-950 font-semibold' : 'glass-light text-slate-300'
+                    }`}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
+          </li>
+        </ul>
+      </div>
     </header>
-  )
+  );
 }
-
-export default Navbar

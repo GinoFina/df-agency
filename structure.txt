@@ -1,0 +1,61 @@
+PROYECTO: DF Agency - Landing Page Dinámica
+STACK TECNOLÓGICO: React (Vite) + Tailwind CSS + EmailJS + Google reCAPTCHA v2 + Lucide React (Iconos)
+
+1. ESTRUCTURA DE CARPETAS Y ARCHIVOS
+------------------------------------
+El proyecto utilizará una arquitectura basada en componentes. Las imágenes provistas estarán en la carpeta `src/assets/images`.
+
+df-agency/
+├── public/
+│   └── vite.svg
+├── src/
+│   ├── assets/
+│   │   └── images/          # Acá van todas tus fotos (estadio, fondos, etc.)
+│   ├── components/
+│   │   ├── Navbar.jsx       # Navegación superior con anclas, botón de contacto y selector de idioma (ES por defecto).
+│   │   ├── Footer.jsx       # Cierre con links y copyright
+│   │   └── ContactForm.jsx  # Formulario principal con la lógica de EmailJS y Captcha
+│   ├── sections/
+│   │   ├── Hero.jsx         # Portada principal con la imagen de la cancha y título
+│   │   ├── About.jsx        # Valores de la agencia (cards con iconos)
+│   │   ├── Services.jsx     # Detalle de servicios (Transferencias, Legal, Marketing)
+│   │   ├── StatsAndFaq.jsx  # Estadísticas en contadores y acordeón de preguntas
+│   │   └── SocialFeed.jsx   # Grilla para embeber publicaciones de LinkedIn/Instagram
+│   ├── App.jsx              # Contenedor principal (renderiza las sections)
+│   ├── main.jsx             # Punto de entrada y StrictMode
+│   └── index.css            # Importación de Tailwind
+├── .env                     # Variables: VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY, VITE_RECAPTCHA_SITE_KEY
+├── package.json             
+├── tailwind.config.js     # Configuración de colores corporativos (basados en el azul del logo y contrastes claros).└── vite.config.js
+
+2. LÓGICA DEL FORMULARIO DINÁMICO (ContactForm.jsx)
+---------------------------------------------------
+El formulario minimiza la escritura manual usando selects condicionales.
+
+- Campos Fijos: Nombre Completo, Email, WhatsApp.
+- Select Principal: "Motivo de Contacto"
+  * Opción 1: Representación de jugador
+  * Opción 2: Inversión / Compra de Club
+  * Opción 3: Servicios de Scouting y Reportes
+- Renderizado Condicional (según el Select Principal):
+  * Si es Opción 1 -> Mostrar Select: "Categoría/Edad" (Sub-17, 18-23, +24) y Select: "Posición".
+  * Si es Opción 2 -> Mostrar Select: "Presupuesto Estimado" y "Liga de Interés".
+  * Si es Opción 3 -> Mostrar Select: "Tipo de Servicio" (Análisis de rival, Búsqueda de talento, etc.).
+- Campo Libre: Textarea opcional ("Mensaje adicional").
+- Seguridad: Componente de react-google-recaptcha.
+- Acción: Al pasar la validación y el captcha, se llama a emailjs.sendForm().
+
+3. COMANDOS DE INSTALACIÓN
+--------------------------
+1. npm create vite@latest df-agency -- --template react
+2. cd df-agency
+3. npm install
+4. npm install -D tailwindcss postcss autoprefixer
+5. npx tailwindcss init -p
+6. npm install lucide-react emailjs-com react-google-recaptcha
+7. npm run dev (Para levantar el servidor local)
+
+4. CONSIDERACIONES DE DISEÑO (Tailwind)
+---------------------------------------
+-Usar un esquema de colores basado en el Azul oscuro del logo provisto como principal, utilizando blanco y grises claros para los contrastes, textos y llamadas a la acción.
+- Asegurar que todas las secciones tengan padding responsive (py-12 md:py-20, px-4 md:px-8).
