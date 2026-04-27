@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, Globe } from 'lucide-react';
-import logo from '../assets/images/DF-Agency-logo.jpg';
+import logo from '../assets/images/logo-sin-fondo.png';
 
 const navLinks = [
-  { href: '#about',   label: { ES: 'Nosotros',  EN: 'About' } },
-  { href: '#services',label: { ES: 'Servicios', EN: 'Services' } },
-  { href: '#social',  label: { ES: 'Social',    EN: 'Social' } },
-  { href: '#contact', label: { ES: 'Contacto',  EN: 'Contact' } },
+  { href: '#about', label: { ES: 'Nosotros', EN: 'About' } },
+  { href: '#services', label: { ES: 'Servicios', EN: 'Services' } },
+  { href: '#social', label: { ES: 'Social', EN: 'Social' } },
+  { href: '#footer', label: { ES: 'Contacto', EN: 'Contact' } },
 ];
 
 export default function Navbar({ lang, setLang }) {
@@ -33,11 +33,8 @@ export default function Navbar({ lang, setLang }) {
           <img
             src={logo}
             alt="DF Agency Logo"
-            className="h-10 w-10 rounded-full object-cover ring-2 ring-accent/40 group-hover:ring-accent transition-all duration-300"
+            className="h-10 w-auto object-contain transition-all duration-300 group-hover:opacity-90"
           />
-          <span className="font-heading font-800 text-xl text-white tracking-wide hidden sm:block">
-            DF Agency
-          </span>
         </a>
 
         {/* Desktop nav */}

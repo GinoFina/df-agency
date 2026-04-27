@@ -2,17 +2,17 @@ import { ExternalLink } from 'lucide-react';
 
 const InstagramIcon = ({ size = 16 }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
   </svg>
 );
 
 const LinkedinIcon = ({ size = 16 }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-    <rect width="4" height="12" x="2" y="9"/>
-    <circle cx="4" cy="4" r="2"/>
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
   </svg>
 );
 
@@ -77,7 +77,7 @@ export default function SocialFeed({ lang }) {
               <InstagramIcon size={16} />{t.igLabel}<ExternalLink size={12} className="opacity-50" />
             </a>
             <a
-              href={LI_URL} target="_blank" rel="noreferrer"
+              href={LI_URL} target="_blank" rel="noopener"
               id="social-linkedin-link"
               className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-light text-sm font-semibold text-slate-300 hover:text-accent hover:border-accent/40 transition-all duration-300 border border-white/10"
             >
@@ -95,20 +95,21 @@ export default function SocialFeed({ lang }) {
           {igPosts.map((post) => (
             <div
               key={post.shortcode}
-              className="rounded-2xl overflow-hidden bg-brand-900/60 border border-white/8"
+              className="rounded-2xl overflow-hidden bg-brand-900/60 border border-white/8 relative"
               style={{ minHeight: '540px' }}
             >
-              <iframe
-                src={`https://www.instagram.com/p/${post.shortcode}/embed/`}
-                width="100%"
-                height="540"
-                frameBorder="0"
-                scrolling="no"
-                allowTransparency
-                title={`Instagram post ${post.shortcode}`}
-                className="w-full"
-                loading="lazy"
-              />
+              <div className="absolute inset-0 overflow-hidden no-scrollbar">
+                <iframe
+                  src={`https://www.instagram.com/p/${post.shortcode}/embed/`}
+                  width="calc(100% + 20px)"
+                  height="540"
+                  frameBorder="0"
+                  allowTransparency
+                  title={`Instagram post ${post.shortcode}`}
+                  style={{ width: 'calc(100% + 20px)', marginLeft: '-10px', marginRight: '-10px' }}
+                  loading="lazy"
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -122,19 +123,21 @@ export default function SocialFeed({ lang }) {
           {liPosts.map((post) => (
             <div
               key={post.activityId}
-              className="rounded-2xl overflow-hidden bg-brand-900/60 border border-white/8"
+              className="rounded-2xl overflow-hidden bg-brand-900/60 border border-white/8 relative"
               style={{ minHeight: '540px' }}
             >
-              <iframe
-                src={`https://www.linkedin.com/embed/feed/update/urn:li:activity:${post.activityId}`}
-                width="100%"
-                height="540"
-                frameBorder="0"
-                allowFullScreen
-                title={`LinkedIn post ${post.activityId}`}
-                className="w-full"
-                loading="lazy"
-              />
+              <div className="absolute inset-0 overflow-hidden no-scrollbar">
+                <iframe
+                  src={`https://www.linkedin.com/embed/feed/update/urn:li:activity:${post.activityId}`}
+                  width="calc(100% + 20px)"
+                  height="540"
+                  frameBorder="0"
+                  allowFullScreen
+                  title={`LinkedIn post ${post.activityId}`}
+                  style={{ width: 'calc(100% + 22px)', marginLeft: '-11px', marginRight: '-11px', overflowX: 'hidden' }}
+                  loading="lazy"
+                />
+              </div>
             </div>
           ))}
         </div>

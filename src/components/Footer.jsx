@@ -2,32 +2,32 @@ import { Mail, Phone, MapPin, ArrowUp } from 'lucide-react';
 
 const InstagramIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
   </svg>
 );
 
 const LinkedinIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-    <rect width="4" height="12" x="2" y="9"/>
-    <circle cx="4" cy="4" r="2"/>
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
   </svg>
 );
-import logo from '../assets/images/DF-Agency-logo.jpg';
+import logo from '../assets/images/logo-sin-fondo.png';
 
 const content = {
   ES: {
     tagline: 'Conectando el talento con el éxito.',
     nav: 'Navegación',
     links: [
-      { href: '#',         label: 'Home' },
-      { href: '#about',    label: 'Nosotros' },
+      { href: '#', label: 'Home' },
+      { href: '#about', label: 'Nosotros' },
       { href: '#services', label: 'Servicios' },
-      { href: '#contact',  label: 'Contacto' },
+      { href: '#social', label: 'Social' },
     ],
-    contact: 'Contacto',
+    social: 'Social',
     rights: 'Todos los derechos reservados.',
     back: 'Volver al inicio',
   },
@@ -35,12 +35,12 @@ const content = {
     tagline: 'Connecting talent with success.',
     nav: 'Navigation',
     links: [
-      { href: '#',         label: 'Home' },
-      { href: '#about',    label: 'About' },
+      { href: '#', label: 'Home' },
+      { href: '#about', label: 'About' },
       { href: '#services', label: 'Services' },
-      { href: '#contact',  label: 'Contact' },
+      { href: '#social', label: 'Social' },
     ],
-    contact: 'Contact',
+    social: 'Social',
     rights: 'All rights reserved.',
     back: 'Back to top',
   },
@@ -56,8 +56,7 @@ export default function Footer({ lang }) {
           {/* Brand */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <img src={logo} alt="DF Agency" className="h-12 w-12 rounded-full object-cover ring-2 ring-accent/40" />
-              <span className="font-heading font-800 text-xl text-white">DF Agency</span>
+              <img src={logo} alt="DF Agency" className="h-12 w-auto object-contain" />
             </div>
             <p className="text-slate-400 text-sm leading-relaxed max-w-xs">{t.tagline}</p>
             <div className="flex gap-3 mt-1">
@@ -73,7 +72,7 @@ export default function Footer({ lang }) {
               <a
                 href="https://www.linkedin.com/company/df-agency-ltd"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener"
                 aria-label="LinkedIn"
                 className="w-9 h-9 rounded-full glass-light flex items-center justify-center text-slate-400 hover:text-accent hover:border-accent/40 transition-all duration-300 hover:scale-110"
               >
@@ -106,21 +105,21 @@ export default function Footer({ lang }) {
             <ul className="flex flex-col gap-3">
               <li className="flex items-center gap-3 text-sm text-slate-400">
                 <Mail size={15} className="text-accent flex-shrink-0" />
-                <a href="mailto:info@dfagency.com" className="hover:text-white transition-colors">info@dfagency.com</a>
+                <a href="mailto:df.agency.scouting@gmail.com" className="hover:text-white transition-colors">df.agency.scouting@gmail.com</a>
               </li>
               <li className="flex items-center gap-3 text-sm text-slate-400">
                 <Phone size={15} className="text-accent flex-shrink-0" />
-                <a href="tel:+54" className="hover:text-white transition-colors">+54 9 XXX XXX XXXX</a>
+                <a className="hover:text-white transition-colors">+54 9 341 373 4895</a>
               </li>
               <li className="flex items-start gap-3 text-sm text-slate-400">
                 <MapPin size={15} className="text-accent flex-shrink-0 mt-0.5" />
-                <span>Buenos Aires, Argentina</span>
+                <span>Rosario, Santa Fe, Argentina</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-white/5 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div id="footer" className="border-t border-white/5 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-slate-500 text-xs">
             © {new Date().getFullYear()} DF Agency. {t.rights}
           </p>

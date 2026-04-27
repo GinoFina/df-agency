@@ -78,38 +78,52 @@ export default function Services({ lang }) {
     const video = videoRef.current;
     if (!video) return;
 
-    // Boomerang / ping-pong: play forward → reverse → forward → …
-    const handleEnded = () => {
-      // Reverse playback (works in Chrome/Edge; Firefox falls back to loop)
-      try {
-        video.playbackRate = -1;
-        video.play().catch(() => {
-          // Fallback: just restart forward
-          video.playbackRate = 1;
-          video.currentTime = 0;
-          video.play();
-        });
-      } catch {
-        video.playbackRate = 1;
+    let rafId = null;
+    let lastTimestamp = null;
+    let reversing = false;
+
+    const reverseStep = (timestamp) => {
+      if (!lastTimestamp) lastTimestamp = timestamp;
+      const elapsed = (timestamp - lastTimestamp) / 1000;
+      lastTimestamp = timestamp;
+
+      // Manually decrement currentTime
+      video.currentTime = Math.max(0, video.currentTime - elapsed);
+
+      if (video.currentTime <= 0.05) {
+        reversing = false;
         video.currentTime = 0;
         video.play();
+        return;
+      }
+      rafId = requestAnimationFrame(reverseStep);
+    };
+
+    const checkEnd = () => {
+      if (!reversing && video.currentTime >= video.duration - 0.1) {
+        reversing = true;
+        video.pause();
+        lastTimestamp = null;
+        rafId = requestAnimationFrame(reverseStep);
       }
     };
 
-    const handleTimeUpdate = () => {
-      // When playing in reverse and reaching the start, switch back to forward
-      if (video.playbackRate < 0 && video.currentTime <= 0.05) {
-        video.playbackRate = 1;
-        video.play();
+    const handleEnded = () => {
+      if (!reversing) {
+        reversing = true;
+        video.pause();
+        lastTimestamp = null;
+        rafId = requestAnimationFrame(reverseStep);
       }
     };
 
+    video.addEventListener('timeupdate', checkEnd);
     video.addEventListener('ended', handleEnded);
-    video.addEventListener('timeupdate', handleTimeUpdate);
 
     return () => {
+      video.removeEventListener('timeupdate', checkEnd);
       video.removeEventListener('ended', handleEnded);
-      video.removeEventListener('timeupdate', handleTimeUpdate);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
